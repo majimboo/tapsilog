@@ -5,8 +5,6 @@ require "sqlite3"
 module Palmade::Tapsilog::Adapters
   class SqliteAdapter < BaseAdapter
 
-    # first create table if it does not exist
-
     def initialize(config)
       super(config)
     end
@@ -32,6 +30,14 @@ module Palmade::Tapsilog::Adapters
       if @db.nil?
 
         @db = SQLite3::Database.new "#{@config[:database]}.sqlite"
+
+        # first create table if it does not exist
+        db.execute "CREATE TABLE IF NOT EXISTS #{@config[:table]} ( service varchar(30), message varchar(30) );"
+
+        # possible log format based on file and proxy adapter
+        # no test was done to see the actual result of file logging
+        # service|instance_key|severity|message|tags
+
         # proxy adapter code 
 
         # if @config[:socket]
