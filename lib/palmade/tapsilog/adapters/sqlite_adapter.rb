@@ -3,7 +3,7 @@
 require "sqlite3"
 
 module Palmade::Tapsilog::Adapters
-  class SQLiteAdapter < BaseAdapter
+  class SqliteAdapter < BaseAdapter
 
     # first create table if it does not exist
 

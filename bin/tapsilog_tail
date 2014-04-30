@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-TAPSILOG_VERSION = "0.3.6"
+TAPSILOG_VERSION = "0.3.7"
 
 require 'yaml'
 require 'optparse'
