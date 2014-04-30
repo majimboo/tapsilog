@@ -8,12 +8,24 @@
   - file - Logs to files, STDOUT or STDERR
   - mongo - Logs to mongoDB
   - proxy - Forwards logs to another tapsilog server
+  - sqlite - Logs to sqlite database
 
 **Gems required for mongoDB support**
 
   - mongo
   - bson
   - bson_ext
+
+**Gems required for sqlite support**
+
+  - sqlite3
+
+**Installing SQLite-ruby on Ubuntu**
+
+    (sudo) apt-get install libsqlite3-dev
+    (sudo) apt-get install ruby-dev
+
+    gem install sqlite3
 
 **Compatibility with analogger**
 
@@ -55,9 +67,3 @@
     logger.level = Palmade::Tapsilog::Logger::DEBUG # defaults to INFO
     logger.info("I am logging a message.")
 
-**Installing SQLite-ruby on Ubuntu**
-
-    (sudo) apt-get install libsqlite3-dev
-    (sudo) apt-get install ruby-dev
-
-    gem install sqlite3
