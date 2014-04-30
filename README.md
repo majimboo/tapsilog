@@ -55,6 +55,9 @@
       # specify database
       database: logs
 
+      # specify table
+      table: history
+
 **Tapsilog Client**
 
   The tapsilog Logger class quacks like the ruby standard Logger.
