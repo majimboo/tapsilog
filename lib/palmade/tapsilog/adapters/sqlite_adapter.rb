@@ -5,6 +5,8 @@ require "sqlite3"
 module Palmade::Tapsilog::Adapters
   class SQLiteAdapter < BaseAdapter
 
+    # first create table if it does not exist
+
     def initialize(config)
       super(config)
     end
@@ -16,13 +18,10 @@ module Palmade::Tapsilog::Adapters
       message = log_message[4]
       tags = log_message[5]
 
-      db.log(service, instance_key, severity, message, tags)
+      db.execute("SELECT 1")
     end
 
-    def flush
-      db.flush
-    end
-
+    # Closes this database.
     def close
       db.close
     end
@@ -31,6 +30,10 @@ module Palmade::Tapsilog::Adapters
 
     def db
       if @db.nil?
+
+        @db = SQLite3::Database.new "#{@config[:database]}.sqlite"
+        # proxy adapter code 
+
         # if @config[:socket]
         #   target = @config[:socket]
         # else
@@ -39,9 +42,8 @@ module Palmade::Tapsilog::Adapters
 
         # Trying to apply something I just learned while studying ruby last night
         # Short-Circuit Evaluation
-        #target = @config[:socket] || "#{@config[:host]}:#{@config[:port]}"
 
-        @db = SQLite3::Database.new "test.db"
+        # target = @config[:socket] || "#{@config[:host]}:#{@config[:port]}"
       end
       @db
     end

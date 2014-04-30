@@ -38,15 +38,10 @@
     syncinterval: 1
 
     backend:
-      adapter: proxy
+      adapter: sqlite
 
-      # You can connect to the destination tapsilog instance via tcpip or unix domain socket
-      #host: 127.0.0.1
-      #port: 19080
-      #socket: /tmp/tapsilog.sock
-
-      # Specify the authorization key of the tapsilog server to connect to
-      key: the_real_logger
+      # specify database
+      database: logs
 
 **Tapsilog Client**
 
@@ -58,3 +53,9 @@
     logger.level = Palmade::Tapsilog::Logger::DEBUG # defaults to INFO
     logger.info("I am logging a message.")
 
+**Installing SQLite-ruby on Ubuntu**
+
+    (sudo) apt-get install libsqlite3-dev
+    (sudo) apt-get install ruby-dev
+
+    gem install sqlite3
