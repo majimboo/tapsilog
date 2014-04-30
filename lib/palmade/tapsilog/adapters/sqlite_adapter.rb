@@ -1,6 +1,7 @@
 # I'm not sure if I should include it directly to the adapter 
 # or is there a better way of doing this?
 require "sqlite3"
+# methods found @ http://sqlite-ruby.rubyforge.org/sqlite3/classes/SQLite3/Database.html
 
 module Palmade::Tapsilog::Adapters
   class SqliteAdapter < BaseAdapter
@@ -10,13 +11,18 @@ module Palmade::Tapsilog::Adapters
     end
 
     def write(log_message)
-      service = log_message[1]
+      service      = log_message[1]
       instance_key = log_message[2]
-      severity = log_message[3]
-      message = log_message[4]
-      tags = log_message[5]
+      severity     = log_message[3]
+      message      = log_message[4]
+      tags         = Palmade::Tapsilog::Utils.hash_to_query_string(log_message[5])
 
-      db.execute("SELECT 1")
+      # make default values incase user forgets to specify additional configurations
+      # to be refactored as it looks messy to have this here and below
+      table    = @config[:table] || 'logtable'
+
+      # insert logs here
+      db.execute("INSERT INTO #{table} (`service`, `instance_key`, `severity`, `message`, `tags`) VALUES (?, ?, ?, ?, ?)", [service, instance_key, severity, message, tags])
     end
 
     # Closes this database.
@@ -28,11 +34,14 @@ module Palmade::Tapsilog::Adapters
 
     def db
       if @db.nil?
+        # make default values incase user forgets to specify additional configurations
+        database = @config[:database] || 'logfile'
+        table    = @config[:table] || 'logtable'
 
-        @db = SQLite3::Database.new "#{@config[:database]}.sqlite"
+        @db = SQLite3::Database.new "#{database}.sqlite"
 
         # first create table if it does not exist
-        db.execute "CREATE TABLE IF NOT EXISTS #{@config[:table]} ( service varchar(30), message varchar(30) );"
+        @db.execute "CREATE TABLE IF NOT EXISTS #{table} ( service varchar(30), instance_key int, severity varchar(30), message TEXT, tags TEXT );"
 
         # possible log format based on file and proxy adapter
         # no test was done to see the actual result of file logging
