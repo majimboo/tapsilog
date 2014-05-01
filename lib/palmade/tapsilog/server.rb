@@ -127,7 +127,7 @@ module Palmade::Tapsilog
           EventMachine.add_periodic_timer(1) { update_now }
           EventMachine.add_periodic_timer(@config[:interval]) { write_queue }
           EventMachine.add_periodic_timer(@config[:syncinterval]) { flush_queue }
-          # a nasty implementation of file rotation (should be a separate cronjob)
+          # a nasty implementation of file rotation (should be a separate cronjob for performance)
           if @config[:backend][:adapter].eql? "sqlite"
             EventMachine.add_periodic_timer(1) { rotate_sqlite }
           end
@@ -138,12 +138,25 @@ module Palmade::Tapsilog
     end
 
     def self.rotate_sqlite
-      original   = "#{@config[:backend][:path]}#{@config[:backend][:database]}.sqlite"
+      today      = "#{@config[:backend][:path]}#{@config[:backend][:database]}.sqlite"
       yesterday  = Date.today.prev_day.strftime('%Y%m%d')
       yesterfile = "#{@config[:backend][:path]}#{yesterday}.sqlite"
-      
+
+      # still a dirty implementation (i would use gem whenever to do the cron)
+      # but I am trying to have the implementation on the code itself
       unless File.file?(yesterfile)
-        File.rename(original, yesterfile)
+        if File.file?(today)
+          File.rename(today, yesterfile)
+        else
+          @db = SQLite3::Database.new today
+        end
+      end
+
+      # double check
+      if File.file?(yesterfile)
+        unless File.file?(today)
+          @db = SQLite3::Database.new today
+        end
       end
     end
 

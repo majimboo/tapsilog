@@ -1,5 +1,3 @@
-require "sqlite3"
-
 module Palmade::Tapsilog::Adapters
   class SqliteAdapter < BaseAdapter
 

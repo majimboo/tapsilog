@@ -2,6 +2,9 @@ require 'socket'
 require 'timeout'
 require 'eventmachine'
 
+# moved here from sqlite_adapter.rb
+require 'sqlite3'
+
 module Palmade
   module Tapsilog
     class Timeout < Exception; end

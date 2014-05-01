@@ -27,10 +27,6 @@
 
     gem install sqlite3
 
-**Rotating sqlite database support**
-
-    gem install whenever
-
 **Compatibility with analogger**
 
   Tapsilog is mostly compatible with analogger client. Though there is a known quirk.
@@ -45,24 +41,24 @@
 
 **Sample Proxy Config**
 
-  socket: /tmp/tapsilog.sock
-  pidfile: /tmp/tapsilog.pid
-  daemonize: true
-  key: some_serious_key
+    socket: /tmp/tapsilog.sock
+    pidfile: /tmp/tapsilog.pid
+    daemonize: true
+    key: some_serious_key
 
-  syncinterval: 1
+    syncinterval: 1
 
-  levels: [ debug, info, warn, error, fatal ]
+    levels: [ debug, info, warn, error, fatal ]
 
-  backend:
-    adapter: sqlite
-    database: logs
+    backend:
+      adapter: sqlite
+      database: logs
 
-    services:
-      - service: default
-        target: history # tablename
-      - service: fatima
-        target: history
+      services:
+        - service: default
+          target: history # tablename
+        - service: fatima
+          target: history
 
 **Tapsilog Client**
 
