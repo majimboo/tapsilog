@@ -46,19 +46,20 @@
     daemonize: true
     key: some_serious_key
 
-    syncinterval: 1
+    interval: 1
 
     levels: [ debug, info, warn, error, fatal ]
 
     backend:
       adapter: sqlite
+      path: /tmp/tapsilog/ # with trailing slash | folder must exist
       database: logs
 
       services:
         - service: default
-          target: history # tablename
+          target: histories # table name
         - service: fatima
-          target: history
+          target: histories
 
 **Tapsilog Client**
 

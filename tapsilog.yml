@@ -9,11 +9,11 @@ levels: [ debug, info, warn, error, fatal ]
 
 backend:
   adapter: sqlite
-  path: /tmp/tapsilog_test/ # with trailing slash | folder must exist
+  path: /tmp/tapsilog/ # with trailing slash | folder must exist
   database: logs
 
   services:
     - service: default
-      target: history # table name
+      target: histories # table name
     - service: fatima
-      target: history
+      target: histories
