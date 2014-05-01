@@ -1,5 +1,5 @@
-socket: t/tapsilog.sock
-pidfile: t/tapsilog.pid
+socket: /tmp/tapsilog.sock
+pidfile: /tmp/tapsilog.pid
 daemonize: false
 key: some_serious_key
 
@@ -9,7 +9,7 @@ levels: [ debug, info, warn, error, fatal ]
 
 backend:
   adapter: sqlite
-  path: /tmp/loggers/ # with trailing slash
+  path: /tmp/tapsilog/ # with trailing slash
   database: logs
 
   services:

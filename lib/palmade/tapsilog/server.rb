@@ -139,25 +139,19 @@ module Palmade::Tapsilog
 
     def self.rotate_sqlite
       today      = "#{@config[:backend][:path]}#{@config[:backend][:database]}.sqlite"
-      yesterday  = Date.today.prev_day.strftime('%Y%m%d')
+      yesterday  = Date.today.prev_day.strftime("%Y%m%d")
       yesterfile = "#{@config[:backend][:path]}#{yesterday}.sqlite"
 
       # still a dirty implementation (i would use gem whenever to do the cron)
       # but I am trying to have the implementation on the code itself
-      unless File.file?(yesterfile)
-        if File.file?(today)
-          File.rename(today, yesterfile)
-        else
-          @db = SQLite3::Database.new today
-        end
+
+      # get create time of today sqlite file
+      birthdate = File.ctime(today).strftime('%Y%m%d')
+
+      if birthdate == yesterday
+        File.rename(today, yesterfile)
       end
 
-      # double check
-      if File.file?(yesterfile)
-        unless File.file?(today)
-          @db = SQLite3::Database.new today
-        end
-      end
     end
 
     def self.start_servers
