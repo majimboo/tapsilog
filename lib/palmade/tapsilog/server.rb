@@ -127,9 +127,23 @@ module Palmade::Tapsilog
           EventMachine.add_periodic_timer(1) { update_now }
           EventMachine.add_periodic_timer(@config[:interval]) { write_queue }
           EventMachine.add_periodic_timer(@config[:syncinterval]) { flush_queue }
+          # a nasty implementation of file rotation (should be a separate cronjob)
+          if @config[:backend][:adapter].eql? "sqlite"
+            EventMachine.add_periodic_timer(1) { rotate_sqlite }
+          end
         }
       ensure
         cleanup
+      end
+    end
+
+    def self.rotate_sqlite
+      original   = "#{@config[:backend][:path]}#{@config[:backend][:database]}.sqlite"
+      yesterday  = Date.today.prev_day.strftime('%Y%m%d')
+      yesterfile = "#{@config[:backend][:path]}#{yesterday}.sqlite"
+      
+      unless File.file?(yesterfile)
+        File.rename(original, yesterfile)
       end
     end
 

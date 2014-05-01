@@ -27,6 +27,10 @@
 
     gem install sqlite3
 
+**Rotating sqlite database support**
+
+    gem install whenever
+
 **Compatibility with analogger**
 
   Tapsilog is mostly compatible with analogger client. Though there is a known quirk.

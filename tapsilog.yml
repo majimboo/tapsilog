@@ -1,6 +1,6 @@
-socket: t/tapsilog.sock
-pidfile: t/tapsilog.pid
-daemonize: false
+socket: /tmp/tapsilog.sock
+pidfile: /tmp/tapsilog.pid
+daemonize: true
 key: some_serious_key
 
 syncinterval: 1
@@ -9,11 +9,11 @@ levels: [ debug, info, warn, error, fatal ]
 
 backend:
   adapter: sqlite
-  path: /tmp/loggers/ # with trailing slash
+  path: /tmp/tapsilog_test/ # with trailing slash | folder must exist
   database: logs
 
   services:
     - service: default
-      target: history
+      target: history # table name
     - service: fatima
       target: history

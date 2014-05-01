@@ -30,13 +30,21 @@ module Palmade::Tapsilog::Adapters
 
     def db
       if @db.nil?
-        database = @config[:database] || 'logs'
-
-        @db = SQLite3::Database.new "#{database}.sqlite"
-
-        @db.execute "CREATE TABLE IF NOT EXISTS `#{@table}` ( service varchar(30), instance_key int, severity varchar(30), message text, tags text, created_at timestamp default current_timestamp);"
+        create_database
+        create_table
       end
       @db
+    end
+
+    private
+
+    def create_database
+      database = @config[:database] || 'logs'
+      @db = SQLite3::Database.new "#{@config[:path]}#{database}.sqlite"
+    end
+
+    def create_table
+      @db.execute "CREATE TABLE IF NOT EXISTS `#{@table}` ( service varchar(30), instance_key int, severity varchar(30), message text, tags text, created_at timestamp default current_timestamp);"
     end
 
   end
