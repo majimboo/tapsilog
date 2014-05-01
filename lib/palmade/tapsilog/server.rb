@@ -47,7 +47,8 @@ module Palmade::Tapsilog
 
       adapter_config = @config[:backend]
       adapter_config[:autocreate] = @config[:autocreate] if @config[:autocreate]
-      adapter_config[:services] = @config[:logs] || []
+      # had to comment this to enable the services support
+      # adapter_config[:services] = @config[:logs] || []
 
       if @config[:default_log]
         adapter_config[:services].push({'service' => 'default', 'target' => @config[:default_log]})

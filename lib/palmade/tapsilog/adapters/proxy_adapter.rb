@@ -32,6 +32,12 @@ module Palmade::Tapsilog::Adapters
         else
           target = "#{@config[:host]}:#{@config[:port]}"
         end
+
+        # Trying to apply something I just learned while studying ruby last night
+        # Short-Circuit Evaluation
+
+        # target = @config[:socket] || "#{@config[:host]}:#{@config[:port]}"
+        
         @conn = Palmade::Tapsilog::Conn.new(target, @config[:key])
         @conn.max_tries = -1
       end

@@ -1,28 +1,18 @@
-# I'm not sure if I should include it directly to the adapter 
-# or is there a better way of doing this?
 require "sqlite3"
-# methods found @ http://sqlite-ruby.rubyforge.org/sqlite3/classes/SQLite3/Database.html
 
 module Palmade::Tapsilog::Adapters
   class SqliteAdapter < BaseAdapter
 
-    def initialize(config)
-      super(config)
-    end
-
     def write(log_message)
-      service      = log_message[1]
-      instance_key = log_message[2]
-      severity     = log_message[3]
-      message      = log_message[4]
-      tags         = Palmade::Tapsilog::Utils.hash_to_query_string(log_message[5])
+      timestamp, service, instance_key, severity, message, tags = log_message
 
-      # make default values incase user forgets to specify additional configurations
-      # to be refactored as it looks messy to have this here and below
-      table    = @config[:table] || 'logtable'
+      unless tags.nil? or tags.empty?
+        tags = Palmade::Tapsilog::Utils.hash_to_query_string(tags)
+      end
 
-      # insert logs here
-      db.execute("INSERT INTO #{table} (`service`, `instance_key`, `severity`, `message`, `tags`) VALUES (?, ?, ?, ?, ?)", [service, instance_key, severity, message, tags])
+      @table = get_table(service)
+
+      db.execute("INSERT INTO `#{@table}` (`service`, `instance_key`, `severity`, `message`, `tags`) VALUES (?, ?, ?, ?, ?)", [service, instance_key, severity, message, tags])
     end
 
     # Closes this database.
@@ -32,33 +22,19 @@ module Palmade::Tapsilog::Adapters
 
     protected
 
+    def get_table(service_name)
+      service_name = (@services[service_name].nil?) ? 'default' : service_name
+      service = @services[service_name]
+      service[:target]
+    end
+
     def db
       if @db.nil?
-        # make default values incase user forgets to specify additional configurations
-        database = @config[:database] || 'logfile'
-        table    = @config[:table] || 'logtable'
+        database = @config[:database] || 'logs'
 
         @db = SQLite3::Database.new "#{database}.sqlite"
 
-        # first create table if it does not exist
-        @db.execute "CREATE TABLE IF NOT EXISTS #{table} ( service varchar(30), instance_key int, severity varchar(30), message TEXT, tags TEXT );"
-
-        # possible log format based on file and proxy adapter
-        # no test was done to see the actual result of file logging
-        # service|instance_key|severity|message|tags
-
-        # proxy adapter code 
-
-        # if @config[:socket]
-        #   target = @config[:socket]
-        # else
-        #   target = "#{@config[:host]}:#{@config[:port]}"
-        # end
-
-        # Trying to apply something I just learned while studying ruby last night
-        # Short-Circuit Evaluation
-
-        # target = @config[:socket] || "#{@config[:host]}:#{@config[:port]}"
+        @db.execute "CREATE TABLE IF NOT EXISTS `#{@table}` ( service varchar(30), instance_key int, severity varchar(30), message text, tags text, created_at timestamp default current_timestamp);"
       end
       @db
     end
