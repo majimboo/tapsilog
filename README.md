@@ -8,7 +8,7 @@
   - file - Logs to files, STDOUT or STDERR
   - mongo - Logs to mongoDB
   - proxy - Forwards logs to another tapsilog server
-  - sqlite - Logs to sqlite database
+  - sqlite - Logs to a sqlite database
 
 **Gems required for mongoDB support**
 
@@ -39,24 +39,26 @@
   
   See tapsilog --help for details 
 
-
 **Sample Proxy Config**
 
-    socket:
-      - /tmp/tapsilog_proxy.sock
-    daemonize: true
-    key: some_serious_key
+  socket: /tmp/tapsilog.sock
+  pidfile: /tmp/tapsilog.pid
+  daemonize: true
+  key: some_serious_key
 
-    syncinterval: 1
+  syncinterval: 1
 
-    backend:
-      adapter: sqlite
+  levels: [ debug, info, warn, error, fatal ]
 
-      # specify database
-      database: logs
+  backend:
+    adapter: sqlite
+    database: logs
 
-      # specify table
-      table: history
+    services:
+      - service: default
+        target: history # tablename
+      - service: fatima
+        target: history
 
 **Tapsilog Client**
 

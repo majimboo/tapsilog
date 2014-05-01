@@ -3,14 +3,18 @@ require "rbconfig"
 require "../lib/palmade/tapsilog"
 require "sqlite3"
 
+TAPSILOG_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+
 class TC_Tapsilog < Test::Unit::TestCase
   
   def setup
-    assert_nothing_raised("setup failed") do
-      @logger = Palmade::Tapsilog::Logger.new("default", "/tmp/tapsilog.sock", "some_serious_key")
-      @db = SQLite3::Database.new "logs.sqlite"
-       
-      @rubybin = File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"])
+    assert_nothing_raised( RuntimeError ) do
+
+      unless @pid = fork
+        exec("#{TAPSILOG_ROOT}/bin/tapsilog start -c #{TAPSILOG_ROOT}/test/tapsilog.yml")
+      end
+      sleep 1
+
     end
   end
   
@@ -18,18 +22,13 @@ class TC_Tapsilog < Test::Unit::TestCase
     ## Nothing really
   end
   
-  def test_serve
-    @tapsilog_pid = exec("#{@rubybin} ../bin/tapsilog -c ./tapsilog.conf -w ./tapsilog.pid")
-    sleep 1
-    puts "pid #{@tapsilog_pid}.\n\n"
+  def test_srv_alive
+    assert_equal(File.exists?("/tmp/tapsilog.pid"), true)
+    assert_equal(File.read("/tmp/tapsilog.pid").chomp,  @pid.to_s)
   end
 
   def test_no_fail
-    assert_nothing_raised( RuntimeError ) { @logger.info("I am logging a message.", {:author => "arif"}) }
-  end
-  
-  def test_srv_alive
-    ## todo
+    # assert_nothing_raised( RuntimeError ) { @logger.info("I am logging a message.", {:author => "arif"}) }
   end
 
   ## add more test

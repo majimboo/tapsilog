@@ -11,14 +11,14 @@ Gem::Specification.new do |s|
   s.email = %q{}
   s.executables = ["tapsilog", "tapsilog_tail"]
   s.extra_rdoc_files = ["lib/palmade/tapsilog.rb", "lib/palmade/tapsilog/adapters.rb", "lib/palmade/tapsilog/adapters/base_adapter.rb", "lib/palmade/tapsilog/adapters/file_adapter.rb", "lib/palmade/tapsilog/adapters/sqlite_adapter.rb", "lib/palmade/tapsilog/adapters/proxy_adapter.rb", "lib/palmade/tapsilog/client.rb", "lib/palmade/tapsilog/conn.rb", "lib/palmade/tapsilog/logger.rb", "lib/palmade/tapsilog/protocol.rb", "lib/palmade/tapsilog/server.rb", "lib/palmade/tapsilog/utils.rb"]
-  s.files = ["CHANGELOG", "INSTALL", "Manifest", "README.md", "Rakefile", "bin/tapsilog", "bin/tapsilog_tail", "lib/palmade/tapsilog.rb", "lib/palmade/tapsilog/adapters.rb", "lib/palmade/tapsilog/adapters/base_adapter.rb", "lib/palmade/tapsilog/adapters/file_adapter.rb", "lib/palmade/tapsilog/adapters/sqlite_adapter.rb", "lib/palmade/tapsilog/adapters/proxy_adapter.rb", "lib/palmade/tapsilog/client.rb", "lib/palmade/tapsilog/conn.rb", "lib/palmade/tapsilog/logger.rb", "lib/palmade/tapsilog/protocol.rb", "lib/palmade/tapsilog/server.rb", "lib/palmade/tapsilog/utils.rb", "spec/config/tapsilog.yml", "spec/spec_helper.rb", "spec/tapsilog.rb", "tapsilog.gemspec", "test/tapsiilog.rb"]
+  s.files = ["CHANGELOG", "INSTALL", "Manifest", "README.md", "Rakefile", "bin/tapsilog", "bin/tapsilog_tail", "lib/palmade/tapsilog.rb", "lib/palmade/tapsilog/adapters.rb", "lib/palmade/tapsilog/adapters/base_adapter.rb", "lib/palmade/tapsilog/adapters/file_adapter.rb", "lib/palmade/tapsilog/adapters/sqlite_adapter.rb", "lib/palmade/tapsilog/adapters/proxy_adapter.rb", "lib/palmade/tapsilog/client.rb", "lib/palmade/tapsilog/conn.rb", "lib/palmade/tapsilog/logger.rb", "lib/palmade/tapsilog/protocol.rb", "lib/palmade/tapsilog/server.rb", "lib/palmade/tapsilog/utils.rb", "spec/config/tapsilog.yml", "spec/spec_helper.rb", "spec/tapsilog.rb", "tapsilog.gemspec", "test/test_helper.rb"]
   s.homepage = %q{}
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Tapsilog", "--main", "README.md"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{tapsilog}
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Hydrid app-level logger from Palmade. Analogger fork.}
-  s.test_files = ["test/tapsiilog.rb"]
+  s.test_files = ["test/test_helper.rb"]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION

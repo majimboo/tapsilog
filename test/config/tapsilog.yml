@@ -1,3 +1,5 @@
+port: 19100
+host: 127.0.0.1
 socket: /tmp/tapsilog.sock
 pidfile: /tmp/tapsilog.pid
 daemonize: true
