@@ -10,7 +10,8 @@ module Palmade::Tapsilog::Adapters
 
       @table = get_table(service)
 
-      db.execute("INSERT INTO `#{@table}` (`service`, `instance_key`, `severity`, `message`, `tags`) VALUES (?, ?, ?, ?, ?)", [service, instance_key, severity, message, tags])
+      db.execute("INSERT INTO `#{@table}` (`service`, `instance_key`, `severity`, `message`, `tags`) VALUES (?, ?, ?, ?, ?)", 
+                 [service, instance_key, severity, message, tags])
     end
 
     # Closes this database.
@@ -21,7 +22,7 @@ module Palmade::Tapsilog::Adapters
     protected
 
     def get_table(service_name)
-      service_name = (@services[service_name].nil?) ? 'default' : service_name
+      service_name = @services[service_name].nil? ? 'default' : service_name
       service = @services[service_name]
       service[:target]
     end
@@ -42,7 +43,13 @@ module Palmade::Tapsilog::Adapters
     end
 
     def create_table
-      @db.execute "CREATE TABLE IF NOT EXISTS `#{@table}` ( service varchar(30), instance_key int, severity varchar(30), message text, tags text, created_at timestamp default current_timestamp);"
+      @db.execute "CREATE TABLE IF NOT EXISTS `#{@table}` (id integer primary key autoincrement, 
+                                                           service varchar(30), 
+                                                           instance_key int, 
+                                                           severity varchar(30), 
+                                                           message text, tags text, 
+                                                           created_at timestamp 
+                                                           default current_timestamp);"
     end
 
   end

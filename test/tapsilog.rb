@@ -40,12 +40,12 @@ describe "Tapsilog" do
     sleep 1
 
     # check sqlite database here
-    count = @db.get_first_value("select count(*) from `history` where `message` = 'message'")
+    count = @db.get_first_value("select count(*) from `histories` where `message` = 'message'")
     count.should be == 4  
 
     levels = [ "info", "warn", "error", "fatal" ]
 
-    results = @db.execute("select `service` || '|' || `severity` || '|' || `message` from `history` where `message` = 'message'")
+    results = @db.execute("select `service` || '|' || `severity` || '|' || `message` from `histories` where `message` = 'message'")
 
     index = 0
     results.each do |row|
@@ -62,12 +62,12 @@ describe "Tapsilog" do
     sleep 1
 
     # check sqlite database here
-    count = @db.get_first_value("select count(*) from `history`")
+    count = @db.get_first_value("select count(*) from `histories`")
     count.should be == 8    
 
     levels = [ "info", "warn", "error", "fatal" ]
 
-    results = @db.execute("select `service` || '|' || `severity` || '|' || `message` || '|' || `tags` from `history` where `message` = 'message_with_tag'")
+    results = @db.execute("select `service` || '|' || `severity` || '|' || `message` || '|' || `tags` from `histories` where `message` = 'message_with_tag'")
 
     index = 0
     results.each do |row|
@@ -84,12 +84,12 @@ describe "Tapsilog" do
     sleep 1
 
     # check sqlite database here
-    count = @db.get_first_value("select count(*) from `history` where `message` = 'message_with_tags'")
+    count = @db.get_first_value("select count(*) from `histories` where `message` = 'message_with_tags'")
     count.should be == 4 
 
     levels = [ "info", "warn", "error", "fatal" ]
 
-    results = @db.execute("select `service` || '|' || `severity` || '|' || `message` || '|' || `tags` from `history` where `message` = 'message_with_tags'")
+    results = @db.execute("select `service` || '|' || `severity` || '|' || `message` || '|' || `tags` from `histories` where `message` = 'message_with_tags'")
 
     index = 0
     results.each do |row|
@@ -107,11 +107,11 @@ describe "Tapsilog" do
     sleep 1
 
     # check sqlite database here
-    count = @db.get_first_value("select count(*) from `history`")
+    count = @db.get_first_value("select count(*) from `histories`")
     count.should be == 15  
 
     # check if `no_info_logging` doesn't have a info severity
-    count = @db.get_first_value("select count(*) from `history` where `message` = 'no_info_logging' and `severity` = 'info'")
+    count = @db.get_first_value("select count(*) from `histories` where `message` = 'no_info_logging' and `severity` = 'info'")
     count.should be == 0
   end
 
@@ -123,11 +123,11 @@ describe "Tapsilog" do
     sleep 1
 
     # check sqlite database here
-    count = @db.get_first_value("select count(*) from `history`")
+    count = @db.get_first_value("select count(*) from `histories`")
     count.should be == 20  
 
     # check if `no_info_logging` doesn't have a info severity
-    count = @db.get_first_value("select count(*) from `history` where `message` = 'log_debug' and `severity` = 'debug'")
+    count = @db.get_first_value("select count(*) from `histories` where `message` = 'log_debug' and `severity` = 'debug'")
     count.should be == 1
   end
 
@@ -136,7 +136,7 @@ describe "Tapsilog" do
   end
 
   it "should have created specified table and inserted logs" do
-    count = @db.get_first_value("select count(*) from history")
+    count = @db.get_first_value("select count(*) from histories")
     count.should be == 20
   end
 
