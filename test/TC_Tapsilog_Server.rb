@@ -5,7 +5,9 @@ require 'test/unit'
 class TestTapsilog < Test::Unit::TestCase
   
   def setup
-    @logger = Palmade::Tapsilog::Logger.new('default', '/tmp/tapsilog.sock', 'some_serious_key')
+    assert_nothing_raised("setup failed") do
+      @logger = Palmade::Tapsilog::Logger.new('default', '/tmp/tapsilog.sock', 'some_serious_key')
+    end
   end
   
   def teardown
